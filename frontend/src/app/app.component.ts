@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
+import { ApiService, IPerson } from './api.service'
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'frontend';
+  tableHeaders = ['Personal code', 'First name', 'Last name', 'Gender', 'Birth date'];
+  persons: Array<IPerson> = []
+  
+  constructor(private apiService: ApiService) {
+    apiService.personCollection()
+              .subscribe(result => this.persons = result)
+  }
 }
