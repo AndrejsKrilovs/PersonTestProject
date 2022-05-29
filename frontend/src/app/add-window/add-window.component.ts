@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-add-window',
   templateUrl: './add-window.component.html',
   styleUrls: ['./add-window.component.css']
 })
-export class AddWindowComponent implements OnInit {
+export class AddWindowComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

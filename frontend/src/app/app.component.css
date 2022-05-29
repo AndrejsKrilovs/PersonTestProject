@@ -88,6 +88,10 @@
     width: 1920px;
   }
 
+  .disable{
+    pointer-events:none;
+  }
+
   /* Responsive Styles */
   @media screen and (max-width: 767px) {
 
