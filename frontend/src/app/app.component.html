@@ -6,13 +6,13 @@
     <!-- Search field for personal code-->
     <div class="form-group">
       <label for="pk"><b>Personal code</b></label>
-      <input type="text" class="card card-small" id="pk" placeholder="000000-00000" (input)="onPersonalIdInput($event)"/>
+      <input type="text" class="card card-small" id="pk" placeholder="000000-00000" (input)="onPersonalIdInput($event)" [value]="personForSearch.id"/>
     </div>
 
     <!-- Search field for birth date-->
     <div class="form-group">
       <label for="bd"><b>Birth date</b></label>
-      <input type="text" class="card card-small" id="bd" placeholder="yyyy-mm-dd" (input)="onPersonalBdInput($event)"/>
+      <input type="text" class="card card-small" id="bd" placeholder="yyyy-mm-dd" (input)="onPersonalBdInput($event)" [value]="personForSearch.bd"/>
     </div>
 
     <!-- Find button -->
@@ -27,7 +27,7 @@
     </div>
 
     <!--Add button -->
-    <div class="form-group">
+    <div class="disable form-group">
       <label for="ab">&nbsp;</label>
       <div class="card card-small" tabindex="1" id="ab" data-toggle="modal" data-target="#exampleModal">
         <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -55,13 +55,10 @@
       <td>{{person.lastName}}</td>
       <td>{{person.gender}}</td>
       <td>{{person.dateOfBirth}}</td>
-      <td>
-        <button type="button" class="btn btn-link" (click)="onEdit(person)" 
-                data-toggle="modal" data-target="#exampleModal">
-          Edit
-        </button>
-      </td>
       <td><button type="button" class="btn btn-link" (click)="onDelete(person)">Delete</button></td>
+    </tr>
+    <tr>
+      <th colspan="5">{{errorMessage}}</th>
     </tr>
     </tbody>
   </table>

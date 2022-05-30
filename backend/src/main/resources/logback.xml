@@ -1,6 +1,7 @@
 <configuration>
+  <timestamp key="timestamp" datePattern="yyyyMMdd"/>
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>logs/console.log</file>
+    <file>logs/log_${timestamp}.log</file>
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} | %-5level | %thread | %logger{0}: %msg%n</pattern>
     </encoder>

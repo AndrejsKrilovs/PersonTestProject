@@ -9,8 +9,9 @@ import { ApiService, IPerson } from './api.service'
 export class AppComponent {
   tableHeaders = ['Personal code', 'First name', 'Last name', 'Gender', 'Birth date'];
   persons: Array<IPerson> = []
-  
-  private personForSearch = {
+  errorMessage = ''
+
+  personForSearch = {
     id: '',
     bd: ''
   }
@@ -34,25 +35,45 @@ export class AppComponent {
     const correctBirthDate: RegExp =/\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])/
     const isDateValid = correctBirthDate.test(this.personForSearch.bd)
 
+    this.errorMessage = ''
     this.persons.splice(0)
-    if(isDateValid){
+
+    if(this.personForSearch.bd.length == 0 && this.personForSearch.id.length == 0) {
+      this.apiService.personCollection().subscribe(result => this.persons = result)
+    }
+
+    if(isDateValid && !isUserIdValid){
       this.apiService.findByBirthDate(this.personForSearch.bd).subscribe(result => this.persons = result)
+
+      if(this.persons.length < 0) {
+        this.errorMessage = 'Person with date ' + this.personForSearch.bd + ' not found'
+      }
     }
       
-    if(isUserIdValid){
-      this.apiService.findById(this.personForSearch.id).subscribe(result => this.persons.push(result))
+    if(isUserIdValid && !isDateValid){
+      this.apiService.findById(this.personForSearch.id).subscribe(
+        (result) => {this.persons.push(result)},
+        (error) => {this.errorMessage = 'Person with id ' + this.personForSearch.id + ' not found'}
+      )
     }
 
     if(isDateValid && isUserIdValid) {
       this.apiService.findByIdAndBirthDate(this.personForSearch.id, this.personForSearch.bd)
-          .subscribe(result => this.persons.push(result))
+        .subscribe(
+          result => {
+            this.persons.splice(0) 
+            this.persons.push(result)
+          }
+        )
+
+        if(this.persons.length < 0) {
+          this.errorMessage = 'Person with date ' + this.personForSearch.bd + ' and id ' + this.personForSearch.id + ' not found'
+        }
     }
 
     if(!isDateValid && !isUserIdValid) {
-      this.apiService.personCollection().subscribe(result => this.persons = result)
+      this.errorMessage = 'Incorrect person id and date. Input * and click Find to show all person list'
     }
-
-    this.personForSearch = {id: '', bd: ''}
   }
 
   onEdit(person: IPerson): void {

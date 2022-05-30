@@ -1,14 +1,16 @@
 package com.example.service;
 
+import com.example.controller.NoPersonElementException;
 import com.example.entity.Person;
 import com.example.repository.PersonRepository;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -18,14 +20,14 @@ public class PersonService {
 
   public List<Person> getPersonList() {
     log.info("Finding all persons .....");
-    List<Person> result = repository.findAll();
+    List<Person> result = repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     log.info("Found {} persons", result.size());
     return result;
   }
 
   public Person findPersonById(String personIdentifier) {
     log.info("Finding person by personIdentifier={} .....", personIdentifier);
-    Person result = repository.findById(personIdentifier).orElseThrow();
+    Person result = repository.findById(personIdentifier).orElseThrow(NoPersonElementException::new);
     log.info("Found person {}", result);
     return result;
   }
@@ -33,7 +35,7 @@ public class PersonService {
   public Person findByIdAndDateOfBirth(String personIdentifier, LocalDate personBirthDate) {
     log.info("Finding person by personIdentifier={} and birthDate={} .....", personIdentifier, personBirthDate);
     Person result = repository.findByIdAndDateOfBirth(personIdentifier, personBirthDate)
-                              .orElseThrow(NoSuchElementException::new);
+                              .orElseThrow(NoPersonElementException::new);
     log.info("Found person {}", result);
     return result;
   }
@@ -95,7 +97,7 @@ public class PersonService {
       repository.delete(item);
       log.info("Person with id={} deleted", personToDelete.getId());
     }, () -> {
-      throw new NoSuchElementException("Person for delete not found");
+      throw new NoPersonElementException("Person for delete not found");
     });
   }
 }

@@ -14,34 +14,43 @@
                     <div class="form-row" style="margin: 0 0.7rem">
                         <div class="form-group col-md-4">
                             <label for="pk">Personal id</label>
-                            <input id="pk" aria-label="Search" class="form-control" type="text" placeholder="000000-00000" [value]="">
+                            <input id="pk" aria-label="Search" class="form-control" type="text" (input)="validatePk($event)"
+                                    pattern="[0-9]{6}-[0-9]{4, }" placeholder="000000-00000" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="bd">Birth date</label>
-                            <input id="bd" aria-label="Search" class="form-control" type="text" placeholder="yyyy-mm-dd" [value]="">
+                            <input id="bd" aria-label="Search" class="form-control" type="text" (input)="validateBd($event)"
+                                    pattern="\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])" placeholder="yyyy-mm-dd" required>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="gender">Gender</label>
-                            <input id="gender" aria-label="Search" class="form-control" placeholder="M or F" type="text">
+                            <input id="gender" aria-label="Search" class="form-control" (input)="validateGender($event)"
+                                    pattern="(M|F)" placeholder="M or F" type="text" required>
                         </div>
                     </div>
 
                     <div class="form-row" style="margin: 0 0.7rem">
                         <div class="form-group col-md-6">
                             <label for="name">Name</label>
-                            <input id="name" aria-label="Search" class="form-control" type="text" placeholder="Name" [value]="">
+                            <input id="name" aria-label="Search" class="form-control" type="text" (input)="validateName($event)"
+                                pattern="[A-Z\u0410-\u042F]{1}[a-z\u0430-\u044F]{1,}" placeholder="Name" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="surname">Surname</label>
-                            <input id="surname" aria-label="Search" class="form-control" type="text" placeholder="Surname" [value]="">
+                            <input id="surname" aria-label="Search" class="form-control" type="text" (input)="validateSurname($event)"
+                                    pattern="[A-Z\u0410-\u042F]{1}[a-z\u0430-\u044F]{1,}" placeholder="Surname" required>
                         </div>
                     </div>
                 </div>
+
+                <ul class="list-group list-group-flush">
+                    <li *ngFor="let message of errorMessages" class="list-group-item">{{message}}</li>
+                  </ul>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add person</button>
+                <button type="button" class="btn btn-primary" (click)="savePerson()">Add person</button>
             </div>
         </div>
     </div>
